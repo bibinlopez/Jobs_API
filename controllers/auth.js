@@ -16,7 +16,23 @@ const register = async (req, res) => {
 
 
 const login = async (req, res) => {
-   res.send('login ')
+   const { email, password } = req.body
+
+   if (!email || !password) {
+      throw new BadRequestError('Please provide email and Password')
+   }
+
+   const user = await User.findOne({ email })
+
+   const isPasswordCorrect = await user.comparePassword(password)
+
+   if (!isPasswordCorrect) {
+      throw new UnauthenticatedError('Invalid Credentials')
+   }
+
+   const token = user.createJWT()
+
+   return res.status(StatusCodes.OK).json({ msg: 'Successfully logged In', user, token })
 }
 
 
