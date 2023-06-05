@@ -12,6 +12,7 @@ const connectDB = require('./db/connect')
 // error handler
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
+const authMiddleware = require('./middleware/authentication')
 
 app.use(express.json());
 // extra packages
@@ -23,7 +24,7 @@ app.use(express.json());
 
 
 app.use('/api/v1/auth',authRouter)
-app.use('/api/v1/jobs', jobsRouter)
+app.use('/api/v1/jobs',authMiddleware,jobsRouter)
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
@@ -32,7 +33,7 @@ const port = process.env.PORT || 3000;
 
 const start = async () => {
   try {
-    // await connectDB(process.env.MONGO_URI)
+    await connectDB(process.env.MONGO_URI)
     app.listen(port, () =>
       console.log(`Server is listening on port ${port}...`)
     );
