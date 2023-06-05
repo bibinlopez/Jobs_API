@@ -1,7 +1,7 @@
 
 
 const getAllJobs = async (req, res) => {
-   res.send('getAllJobs')
+   console.log(req.user);
 }
 
 
