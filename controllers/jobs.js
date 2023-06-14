@@ -22,7 +22,11 @@ const createJob  = async (req, res) => {
 }
 
 const getOneJob = async (req, res) => {
-   res.send('getOneJob')
+   const job = await Job.findOne({ createdBy: req.user.userId, _id: req.params.id }).populate('createdBy')
+   if (!job) {
+      throw new Errors.NotFoundError('no Jobs found in this id')
+   }
+   return res.status(200).json({ data: job })
 }
 
 
