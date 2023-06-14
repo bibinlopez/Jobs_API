@@ -1,3 +1,5 @@
+const Job = require('../models/Job')
+const Errors = require('../errors')
 
 
 const getAllJobs = async (req, res) => {
@@ -6,7 +8,12 @@ const getAllJobs = async (req, res) => {
 
 
 const createJob  = async (req, res) => {
-   res.send('createJob')
+   console.log(req.user);
+   req.body.createdBy = req.user.userId
+   const job = new Job(req.body)
+   const result = await job.save()
+
+   return res.status(201).json({ result })
 }
 
 const getOneJob = async (req, res) => {

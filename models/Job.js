@@ -8,15 +8,15 @@ const jobSchema = new mongoose.Schema({
       required: [true, 'Please provide company'],
       maxLength: 50
    },
-   positon: {
+   position: {
       type: String,
       required: [true, 'Please provide position'],
       maxLength: 100
    },
    status: {
       type: String,
-      enum: [interview, placed, pending],
-      default: pending
+      enum: ['interview','declined', 'pending'],
+      default: 'pending'
    },
    createdBy: {
       type: mongoose.Types.ObjectId,
