@@ -3,7 +3,12 @@ const Errors = require('../errors')
 
 
 const getAllJobs = async (req, res) => {
-   console.log(req.user);
+   const job = await Job.find({ createdBy: req.user.userId }).sort('createdAt')
+   if(job.length===0){
+      throw new Errors.NotFoundError('no jobs found')
+   }
+   return res.status(200).json({ data: job, count: job.length })
+
 }
 
 
